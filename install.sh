@@ -1,3 +1,13 @@
+function addPath () {
+	echo "Adding $(pwd) to path..."
+	pre="export PATH="
+	execpath=$(pwd)
+	post=":\$PATH"
+	pathexport="$pre$execpath$post"
+	echo $pathexport >> ~/.bashrc 
+}
+
+
 #bash clean.sh
 printf "======================================================================\n"
 printf "              Q-E, WannierTools, SIESTA  TACC INSTALLER               \n"
@@ -14,8 +24,9 @@ if (($booltest == 1 )); then
 	#configure, make, etc
 	cd ../
 fi
-cd install
 
+## Now installing quantum espresso
+cd install
 echo "Downloading q-e..."
 #git clone https://github.com/QEF/q-e.git
 cd q-e
@@ -40,17 +51,13 @@ export FFT_LIBS="${BLAS_LIBS}"
 #./configure
 #make pw pwcond pp w90
 
-cd bin
-pre="export PATH="
-execpath=$(pwd)
-post=":\$PATH"
-pathexport="$pre$execpath$post"
+cd ./bin/
 echo "####  DFT ALIASES BELOW  ####" >> ~/.bashrc 
-echo $pathexport >> ~/.bashrc 
+#addPath
 cd ../../
 
-#compile options
 
+# ADD LATER: SIESTA, WANNIERTOOLS
 if (1==0); then
 echo "Downloading WannierTools..."
 git clone https://github.com/quanshengwu/wannier_tools.git
@@ -198,13 +205,14 @@ EOF
 make
 fi
 
-source ~/.bashrc
-printf "Added QE executables to path in your .bashrc\n"
+
+
 #cd ../
 
 printf "Creating systems, outputs, and scripts folders...\n"
 mkdir ../systems/
 mkdir $SCRATCH/dft
+mkdir $SCRATCH/qe
 mkdir ../systems/test/
 mkdir ../outputs/
 #cp -r ./scripts ../
@@ -225,21 +233,21 @@ printf "Added 'cddft' as alias to cd into dft dir in .bashrc\n"
 
 #cd ./dft-tacc-install/scripts/
 cd ./scripts
-pre="export PATH="
-execpath=$(pwd)
-post=":\$PATH"
-pathexport="$pre$execpath$post"
-echo $pathexport >> ~/.bashrc
-printf "Added DFT scripts to path in your .bashrc\n"
+addPath
 cd ../
 
-cd /outputs/
+
+## adding dft output path to bashrc
+echo "In folder outputs = $(pwd)"
+cd ./outputs/
 pre="export dftOutputPath="
 execpath=$(pwd)
 pwd
 pathexport2="$pre'$execpath'"
 echo $pathexport2 >> ~/.bashrc
 printf "Added dft output path as dftOutputPath in your .bashrc\n"
+
+
 source ~/.bashrc
 printf "Applied source to your .bashrc\n"
 printf "Install complete!\n"
