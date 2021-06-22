@@ -7,6 +7,15 @@ function addPath () {
 	echo $pathexport >> ~/.bashrc 
 }
 
+function addPrefixPath () {
+	echo "Assigning $(pwd) to $1..."
+	pre="export $1='"
+	execpath=$(pwd)
+	post="'"
+	pathexport="$pre$execpath$post"
+	echo $pathexport >> ~/.bashrc 
+}
+
 
 #bash clean.sh
 printf "======================================================================\n"
@@ -14,51 +23,23 @@ printf "              Q-E, WannierTools, SIESTA  TACC INSTALLER               \n
 printf "======================================================================\n"
 printf "                                                                      \n"
 
+
+
+echo "####  DFT ALIASES BELOW  ####" >> ~/.bashrc 
 mkdir projects
 mkdir install
 printf "Need QE 6.4.1 with Sc Hubbard +U? Enter 1 or 0 for yes or no: "
 read booltest
 if (($booltest == 1 )); then
 	cd ./install
-	cp ./q-e-bigkgrid-sc-hubU-6.4.1.tar.gz q-e-6.4.1-edited.tar.gz
-	tar -xvzf q-e-6.4.1-edited.tar.gz
-	cd q-e-6.4.1-edited
-	
-	
+	bash build641_xconfigure	
+	cd q-e-6.4.1/bin
+	addPrefixPath qeEditedPath
+	cd ../../	
 	#configure, make, etc
 	cd ../
 fi
 
-## Now installing quantum espresso
-cd install
-echo "Downloading q-e..."
-#git clone https://github.com/QEF/q-e.git
-cd q-e
-
-echo "Installing q-e..."
-export ARCH=x86_64
-export F77=ifort
-export MPIF90=mpif90
-export CC=icc
-export LD_LIBS="-Wl,--as-needed -liomp5 -Wl,--no-as-needed"
-export LDFLAGS="-Wl,--as-needed -liomp5 -Wl,--no-as-needed"
-export DFLAGS="-D__OPENMP -D__INTEL -D__DFTI -D__MPI -D__PARA -D__SCALAPACK -D__USE_MANY_FFT -D__NON_BLOCKING_SCATTER -D__EXX_ACE"
-export FFLAGS="-O3 -fp-model precise -assume byterecl -qopenmp"
-#export FFLAGS="-O3 -xCORE-AVX2 -axMIC-AVX512,CORE-AVX512 -fp-model precise -assume byterecl -qopenmp"
-export IFLAGS="-I../include/ -I${MKLROOT}/include -I../FoX/finclude -I../../FoX/finclude"
-export BLAS_LIBS=" -L${MKLROOT}/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -lm -ldl"
-export LAPACK_LIBS="${BLAS_LIBS}"
-export SCALAPACK_LIBS="-lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64"
-export FFT_LIBS="${BLAS_LIBS}"
-
-#configure and make
-#./configure
-#make pw pwcond pp w90
-
-cd ./bin/
-echo "####  DFT ALIASES BELOW  ####" >> ~/.bashrc 
-#addPath
-cd ../../
 
 
 # ADD LATER: SIESTA, WANNIERTOOLS
@@ -262,15 +243,14 @@ read booltest
 if (($booltest == 1 )); then
 	printf "\n=========== RUNNING TEST CODE ===========\n"
         printf "    cd-ing into /systems/test... \n\n"
-	cd ../systems/test/
+	cd ../projects/test/
         printf "    list files in directory with 'ls -lt': "
         ls -lt
 	printf "\n    typing 'bash mumax3.sh general-mumax3.sl test.mx3'\n"
 	printf "    (this runs the wrapper script 'mumax3.sl' to call the slurm script 'general-mumax3.sl' with test.mx3)\n"
 	printf "    (after which the results will be copied back into /outputs/ )\n"
-        bash mumax3.sh general-mumax3.sl test.mx3
+        bash dft.sh pwscf.sl test.scf
 	printf "\n\nCongrats! if all of that worked, then you can go make your own systems now and run them :^)\n"
-	printf "Have fun with your magnets\n"
 fi
 
 cd ../
