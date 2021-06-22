@@ -33,7 +33,10 @@ read booltest
 if (($booltest == 1 )); then
 	cd ./install
 	printf "\nThis may take a long time...\n\n"
-	bash build641_xconfigure > install.log	
+	echo "Go get a snack, kick back, scroll through reddit"
+	echo "What snack will you be consuming? (type your snack): "
+	read snack
+	bash build641_xconfigure	
 	cd q-e-qe-6.4.1/bin
 	addPrefixPath qePathEdited
 	cd ../../	
