@@ -1,35 +1,36 @@
 
-mumax3 TACC autoinstaller + userguide
+DFT TACC autoinstaller + userguide
 =========================================================
 developed for inclab
 
 **DOWNLOAD**
 
-First, one should create a mumax folder somewhere on /work/. (use cdw to move to /work/).
-Perform `module load git` and `git clone [link to this git repo]` to pull these files into your directory. This link can be pulled from the green button at the top right of the git page. 
+First, one should create a DFT folder somewhere on /work/ (or /work2/ for now). (use cdw to move to /work/).
+Perform `git clone [link to this git repo]` to pull these files into your directory. This link can be pulled from the green button at the top right of the git page. 
 
 
 **INSTALLATION**
  - If using zip file:
 To extract, type `unzip [filename]`.
  - If using git:
-    1. module load git -> git clone [https://etc etc.git]
-    2. perform `cd install-mumax3-tacc` 
+    1. git clone [https://etc etc.git]
+    2. perform `cd dft-tacc-install` 
     3. To install, one should type (exactly) `. ./install.sh`
-    4. There should be little else that needs to be done. This will download and extract a precompiled binary, and set up the environment to run the scripts.
-    5. This will also add the necessary paths to your .bashrc file automatically.
-    6. EDIT THE EMAIL in the .sl script if you care to recieve notifications about your simulation. For example, I would set mine to =vivian.rogers@utexas.edu
+    4. If using ScN with hubbard +U, type 1 when it asks to install qe-6.4.1
+    5. There should be little else that needs to be done. This will download and extract a precompiled binary, and set up the environment to run the scripts.
+    6. This will also add the necessary paths to your .bashrc file automatically.
+    7. EDIT THE EMAIL in the .sl script if you care to recieve notifications about your simulation. For example, I would set mine to =vivian.rogers@utexas.edu
 
 **RUNNING SIMULATIONS**
 
 A wrapper script will handle the actual slurm `sbatch [slurm script]` calls, prepare to copy to /scratch/, can provide documentation, and will name/date your simulations.
 After running on /scratch/, your simulations will be copied back to /work/.../outputs/.  to use, type
 
-    bash mumax3.sh [name of slurm script you want to call] [filename of mumax3 file]
+    bash dft.sh [name of slurm script you want to call] [filename of quantum espresso, siesta, etc file]
 
 The slurm scripts end in a .sl suffix, and can be created with the particular parameters you need (compute time, nodes, tasks, etc). Please change the email.
 Please change the email.
-A general purpose `general-mumax3.sl` sbatch script is provided.
+A general purpose `pwscf.sl` sbatch script is provided.
 The systems you want to simulate might be created in new folders in /systems/. A template system is provided. Might change it for your needs.
 
 
