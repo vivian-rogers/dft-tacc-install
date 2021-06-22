@@ -32,7 +32,7 @@ printf "Need QE 6.4.1 with Sc Hubbard +U? Enter 1 or 0 for yes or no: "
 read booltest
 if (($booltest == 1 )); then
 	cd ./install
-	bash build641_xconfigure	
+	bash build641_xconfigure > install.log	
 	cd q-e-6.4.1/bin
 	addPrefixPath qeEditedPath
 	cd ../../	
