@@ -33,7 +33,8 @@ read booltest
 if (($booltest == 1 )); then
 	echo "This may take a long time..."
 	cd ./install
-	bash build641_xconfigure	
+	echo "This may take a long time..."
+	bash build641_xconfigure > install.log	
 	cd q-e-6.4.1/bin
 	addPrefixPath qeEditedPath
 	cd ../../	
