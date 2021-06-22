@@ -7,28 +7,28 @@ rm -rf ./elpa-2018.11.001.tar.gz
 rm -rf ./q-e-qe-6.4.1.tar.gz
 
 # get source 
-wget https://elpa.rzg.mpg.de/software/tarball-archive/Releases/2018.11.001/elpa-2018.11.001.tar.gz &>> install.log
-cp ./q-e-bigkgrid-sc-hubU-6.4.1.tar.gz ./q-e-qe-6.4.1.tar.gz &>> install.log
+wget https://elpa.rzg.mpg.de/software/tarball-archive/Releases/2018.11.001/elpa-2018.11.001.tar.gz
+cp ./q-e-bigkgrid-sc-hubU-6.4.1.tar.gz ./q-e-qe-6.4.1.tar.gz
 #wget https://gitlab.com/QEF/q-e/-/archive/qe-6.4.1/q-e-qe-6.4.1.tar.bz2
 
 # build ELPA
-tar xvf elpa-2018.11.001.tar.gz &>> install.log
+tar xvf elpa-2018.11.001.tar.gz
 cd elpa-2018.11.001
-wget --no-check-certificate https://github.com/hfp/xconfigure/raw/master/configure-get.sh &>> install.log
-chmod +x configure-get.sh &>> install.log
-./configure-get.sh elpa &>> install.log
+wget --no-check-certificate https://github.com/hfp/xconfigure/raw/master/configure-get.sh
+chmod +x configure-get.sh
+./configure-get.sh elpa
 
 make clean >> install.log
-./configure-elpa-skx-omp.sh &>> install.log
-make -j ; make install &>> install.log
+./configure-elpa-skx-omp.sh
+make -j ; make install
 
 cd ..
 
 #build qe and linked against the built elpa
-tar xvf q-e-qe-6.4.1.tar.gz &>> install.log
+tar xvf q-e-qe-6.4.1.tar.gz 
 cd q-e-qe-6.4.1
-wget --no-check-certificate https://github.com/hfp/xconfigure/raw/master/configure-get.sh &>> install.log
+wget --no-check-certificate https://github.com/hfp/xconfigure/raw/master/configure-get.sh 
 chmod +x configure-get.sh
-./configure-get.sh qe &>> install.log
-./configure-qe-skx-omp.sh &>> install.log
-make all &>> install.log
+./configure-get.sh qe
+./configure-qe-skx-omp.sh
+make all
