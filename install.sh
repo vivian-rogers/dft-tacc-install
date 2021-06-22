@@ -27,16 +27,15 @@ printf "                                                                      \n
 
 echo "####  DFT ALIASES BELOW  ####" >> ~/.bashrc 
 mkdir projects
-mkdir install
+#mkdir install
 printf "Need QE 6.4.1 with Sc Hubbard +U? Enter 1 or 0 for yes or no: "
 read booltest
 if (($booltest == 1 )); then
-	echo "This may take a long time..."
 	cd ./install
-	echo "This may take a long time..."
-	bash build641_xconfigure > install.log	
-	cd q-e-6.4.1/bin
-	addPrefixPath qeEditedPath
+	printf "\nThis may take a long time...\n\n"
+	#bash build641_xconfigure > install.log	
+	cd q-e-qe-6.4.1/bin
+	addPrefixPath qePathEdited
 	cd ../../	
 	#configure, make, etc
 	cd ../
@@ -196,20 +195,20 @@ fi
 
 #cd ../
 
-printf "Creating systems, outputs, and scripts folders...\n"
-mkdir ../systems/
+printf "Creating projects, outputs, and scripts folders...\n"
+mkdir ./projects/
 mkdir $SCRATCH/dft
 mkdir $SCRATCH/qe
-mkdir ../systems/test/
-mkdir ../outputs/
+mkdir ./projects/test/
+mkdir ./outputs/
 #cp -r ./scripts ../
-#cp ./test.mx3 ../systems/test/
+cp ./test.scf ../projects/test/
 
 
 
 
 
-cd ../
+#cd ../
 pre="alias cddft='cd "
 execpath=$(pwd)
 post="'"
@@ -244,14 +243,14 @@ read booltest
 
 if (($booltest == 1 )); then
 	printf "\n=========== RUNNING TEST CODE ===========\n"
-        printf "    cd-ing into /systems/test... \n\n"
-	cd ../projects/test/
+        printf "    cd-ing into /projects/test... \n\n"
+	cd ./projects/test/
         printf "    list files in directory with 'ls -lt': "
         ls -lt
-	printf "\n    typing 'bash mumax3.sh general-mumax3.sl test.mx3'\n"
+	printf "\n    typing 'bash dft.sh editedpwscf.sl test.scf'\n"
 	printf "    (this runs the wrapper script 'mumax3.sl' to call the slurm script 'general-mumax3.sl' with test.mx3)\n"
 	printf "    (after which the results will be copied back into /outputs/ )\n"
-        bash dft.sh pwscf.sl test.scf
+        bash dft.sh editedpwscf.sl test.scf
 	printf "\n\nCongrats! if all of that worked, then you can go make your own systems now and run them :^)\n"
 fi
 
