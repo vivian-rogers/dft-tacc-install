@@ -205,7 +205,7 @@ mkdir $SCRATCH/qe
 mkdir ./projects/test/
 mkdir ./outputs/
 #cp -r ./scripts ../
-cp ./test.scf ../projects/test/
+mv ./test.scf ./projects/test/
 
 
 
