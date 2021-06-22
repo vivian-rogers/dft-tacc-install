@@ -31,6 +31,7 @@ mkdir install
 printf "Need QE 6.4.1 with Sc Hubbard +U? Enter 1 or 0 for yes or no: "
 read booltest
 if (($booltest == 1 )); then
+	echo "This may take a long time..."
 	cd ./install
 	bash build641_xconfigure	
 	cd q-e-6.4.1/bin
