@@ -20,7 +20,11 @@ printf "Need QE 6.4.1 with Sc Hubbard +U? Enter 1 or 0 for yes or no: "
 read booltest
 if (($booltest == 1 )); then
 	cd ./install
-	tar -xvzf  
+	cp ./q-e-bigkgrid-sc-hubU-6.4.1.tar.gz q-e-6.4.1-edited.tar.gz
+	tar -xvzf q-e-6.4.1-edited.tar.gz
+	cd q-e-6.4.1-edited
+	
+	
 	#configure, make, etc
 	cd ../
 fi
