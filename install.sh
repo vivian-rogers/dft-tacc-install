@@ -202,10 +202,10 @@ printf "Creating projects, outputs, and scripts folders...\n"
 mkdir ./projects/
 mkdir $SCRATCH/dft
 mkdir $SCRATCH/qe
-mkdir ./projects/test/
+#mkdir ./projects/test
 mkdir ./outputs/
 #cp -r ./scripts ../
-mv ./test.scf ./projects/test/
+#mv ./test.scf ./projects/test/
 
 
 
@@ -243,8 +243,10 @@ vim ./scripts/editedpwscf.sl
 echo "Now for the other one (type 'okay fine')"
 read changefile
 vim ./scripts/pwscf.sl
-
-
+#echo "While I have you here, I should recommend you to read 'The Dispossessed' by Ursula K Leguin"
+#echo "What do you think? (type 'shutup viv')"
+#read boolconvo
+#echo 
 
 source ~/.bashrc
 printf "Applied source to your .bashrc\n"
