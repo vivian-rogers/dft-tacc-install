@@ -235,6 +235,15 @@ pwd
 pathexport2="$pre'$execpath'"
 echo $pathexport2 >> ~/.bashrc
 printf "Added dft output path as dftOutputPath in your .bashrc\n"
+cd ../
+
+echo "Want to change the pwscf.sl file to your frontera allocation and email? (you do, type yes)"
+read changefile
+vim ./scripts/editedpwscf.sl
+echo "Now for the other one (type 'okay fine')"
+read changefile
+vim ./scripts/pwscf.sl
+
 
 
 source ~/.bashrc
@@ -246,14 +255,14 @@ read booltest
 
 if (($booltest == 1 )); then
 	printf "\n=========== RUNNING TEST CODE ===========\n"
-        printf "    cd-ing into /projects/test... \n\n"
-	cd ./projects/test/
+        printf "    cd-ing into /projects/co2scsb... \n\n"
+	cd ./projects/co2scsb/
         printf "    list files in directory with 'ls -lt': "
         ls -lt
-	printf "\n    typing 'bash dft.sh editedpwscf.sl test.scf'\n"
-	printf "    (this runs the wrapper script 'mumax3.sl' to call the slurm script 'general-mumax3.sl' with test.mx3)\n"
+	printf "\n    typing 'bash dft.sh editedpwscf.sl input.scf'\n"
+	printf "    (this runs the wrapper script 'dft.sh' to call the slurm script 'editedpwscf.sl' with input.scf)\n"
 	printf "    (after which the results will be copied back into /outputs/ )\n"
-        bash dft.sh editedpwscf.sl test.scf
+        bash dft.sh editedpwscf.sl input.scf
 	printf "\n\nCongrats! if all of that worked, then you can go make your own systems now and run them :^)\n"
 fi
 
