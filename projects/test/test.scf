@@ -1,0 +1,59 @@
+ &control
+    calculation='scf'
+    restart_mode='from_scratch', !disregards any prior wfc, etc files created 
+    pseudo_dir = '/work/06640/wrogers/mysharedirectory/pseudos/ONCV/FR/', 		 !the pseudopotentials will be in this directory
+    prefix='dat' 		 !this is the prefix that the PWCOND file will pull from
+    disk_io = 'low'
+    verbosity='high' 		 !will print out fermi energy in output 
+/
+&system
+    ibrav= 2,
+    A=6.22
+    !celldm(1)= 11.7654,
+    !celldm(3)= 1.4142,
+    nat= 4, 				!number of atoms in unit cell for scf calculation
+    ntyp= 4, 				!number of types of atoms defined under atomic species
+    !nbnd = 64  				!number of bands to be calculated, default should be fine
+  
+    noncolin= .true. 			!"if .true, the program will perform a noncollinear calculation"
+    lspinorb = .true. 			!if true, noncolin mode can use a pseudopotential with spin-orbit
+    noinv = .true.,
+    no_t_rev = .true.,
+    !nspin = 2,				!if 1, will perform non-spin-polarized calculation. if 2, will do so, constraining magnetization to z axis. if 4, will do noncollinear magnetization    
+    starting_magnetization(1)= 0.2,	!starting magnetization
+    starting_magnetization(2)= 0.2,	!starting magnetization
+    starting_magnetization(3)= 0.2,	!starting magnetization
+    starting_magnetization(4)= 0,	!starting magnetization
+    constrained_magnetization = 'atomic direction'
+    !input_dft='HSE'
+    report = 1,
+    ecutwfc = 70, 			!kinetic energy cutoff (Ry) for wfcs
+    ecutfock = 400
+    ecutrho = 700, 			!kinetic energy cutoff for charge density and potential. see *.UPF file 
+    !nqx1=2, nqx2=2, nqx3=2,
+    occupations='smearing', 		!used with systems with metals. Doesn't fix occupations. 
+    smearing='gaussian', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
+    degauss=0.02 			!value of gaussian spreading for brillouin zone integration
+ /
+ &electrons
+    diagonalization='david',		!type of diagonalization, conjugate-gradient band by band diag. uses less m   
+    adaptive_thr = .true.,
+    conv_thr = 1.0e-8,			!convergence threshold for scf, will stop if estimated energy error is less that
+    mixing_beta = 0.1			!mixing factor for scf
+ /
+ 
+ATOMIC_SPECIES
+Co1 58.933 Co.UPF
+Co2 58.933 Co.UPF
+Sc 44.956 Sc.UPF
+Sb 121.76 Sb.UPF
+
+ATOMIC_POSITIONS (crystal)
+Sc 0.00000 0.00000 0.0000
+Co1 0.25000 0.25000 0.2500
+Sb 0.50000 0.50000 0.5000
+Co2 0.75000 0.75000 0.7500
+
+K_POINTS (automatic)
+6 6 6 0 0 0
+
