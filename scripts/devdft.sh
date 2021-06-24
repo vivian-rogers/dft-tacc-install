@@ -15,6 +15,8 @@
 beginDir=$(pwd)
 
 ### staging files for copy to scratch
+DATE=$(date "+%H-%M_%A_%B_%d_%Y")
+FOLDERNAME="TESTING-$DATE"
 FOLDERPATH=$SCRATCH/qe/$FOLDERNAME 
 mkdir $FOLDERPATH
 cp -r * $FOLDERPATH
