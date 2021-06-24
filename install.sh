@@ -36,6 +36,7 @@ if (($booltest == 1 )); then
 	echo "Go get a snack, kick back, scroll through reddit"
 	echo "What snack will you be consuming? (type your snack): "
 	read snack
+	wget https://www.utinclab.com/wp-content/uploads/2021/06/q-e-bigkgrid-sc-hubU-6.4.1.tar.gz
 	bash build641_xconfigure	
 	cd q-e-qe-6.4.1/bin
 	addPrefixPath qePathEdited

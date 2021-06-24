@@ -22,7 +22,7 @@ cd $FOLDERPATH
 
 
 ### running desired calculations, postprocessing
-module load qe/6.6
+#module load qe/6.6
 MKL_NUM_THREADS=8
 ibrun $qePathEdited/pw.x -input $FILENAME
 
