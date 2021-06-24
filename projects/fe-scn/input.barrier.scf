@@ -42,7 +42,7 @@
  /
  &electrons
     electron_maxstep=1200
-    diagonalization='cg',		!type of diagonalization, conjugate-gradient band by band diag. uses less me 
+    diagonalization='david',		!type of diagonalization, conjugate-gradient band by band diag. uses less me 
     !startwingwfc='random',		!
     mixing_mode='local-TF',
     !efield = 0 			!amplitude of efield if lelfield = .true.. see efield_cart(i) for direction
