@@ -26,10 +26,10 @@ module load qe/6.6
 MKL_NUM_THREADS=8
 ibrun pw.x -input Fe.scf
 ibrun pw.x -input Fe.nscf
-wannier90.x -pp Fe
-pw2wannier90.x -input Fe.pw2wan
-ibrun wannier90.x Fe
-postw90.x Fe
+$qePathEdited/wannier90.x -pp Fe
+$qePathEdited/pw2wannier90.x -input Fe.pw2wan
+ibrun $qePathEdited/wannier90.x Fe
+$qePathEdited/postw90.x Fe
 
 ### copy files back to output folder
 cp $beginDir/*.out.* ./
