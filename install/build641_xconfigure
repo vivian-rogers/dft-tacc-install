@@ -31,4 +31,4 @@ wget --no-check-certificate https://github.com/hfp/xconfigure/raw/master/configu
 chmod +x configure-get.sh
 ./configure-get.sh qe
 ./configure-qe-skx-omp.sh
-make all
+make pw pwcond pp w90
