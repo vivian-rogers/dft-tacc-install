@@ -1,0 +1,98 @@
+
+
+
+######## INSTRUCTIONS FOR USING QE.SH ###########
+
+Preface:
+
+This script library was developed with the focus of running electron transport in magnetic systems in quantum espresso on the lonestar5 supercomputer. If you seek to deviate from that, be careful!!!
+
+For using pw.x (generating wavefunctions, relaxation, nscf, bands calculations):
+take a look at the pw.x documentation here https://www.quantum-espresso.org/Doc/INPUT_PW.html
+
+For using pwcond.x (running transport, complex bands calculations):
+take a look at the pwcond.x documentation here https://www.quantum-espresso.org/Doc/INPUT_PWCOND.html
+
+
+These scripts were developed to run on my QE install, with my shared directories. If you choose to install this on your LS5 account, you should change your directory paths to what makes sense for your account. The basic directories you should set up are as follows:
+
+ - Quantum Espresso install directory (can wget the latest version, or extract our modified provided version with our build script)
+ - A directory for scripts
+ - A directory for pseudopotentials
+ - A directory for "systems" (input files, etc)
+ - A directory for outputs 
+ - A directory for calculations 
+  -- this lives in your $SCRATCH folder and is handled automatically! calculations are done here to avoid bogging downthe $WORK and $HOME filesystems
+
+One should add, to their ~/.bashrc directory, "path" variables to 
+ - the scripts folder
+ - the quantum espresso /bin/ folder
+so that the calculations can read other scripts and executables to run the calculation
+
+
+
+
+####### ACTUALLY USING THE SOFTWARE #########
+
+(make sure the directories mentioned in each script are changed to make sense on YOUR account!!!!! please change the emails, I don't want emails every time one of your scripts runs)
+
+The basic structure of a calculation is as follows: 
+
+One has a bunch of QE scripts in a folder (you set these up), and "qe.sh" is executed there by you!
+The scripts, and whatever data or wavefunctions, are copied to a directory on your scratch filesystem
+A wrapper bash script queues a QE calculation on slurm, executed in that scratch directory
+When it is done, the output will be copied back to the output directory on $work as specified by the bash script triggered by qe.sh
+
+I can only guarantee the scripts to run the following calculations will work:
+scf, scf/nscf/bands, scf on the leads, scf on the barrier region, barrierscf continue, conduction, and conduction continue for each channel
+
+ ///I have called the pw.x input "scf" for the barrier and lead calculation, but this is not necessarily accurate. One can stick "vc-relax" or whatever in the "calculation type. Just ensure that the name of the input file is retained. 
+
+
+You might desire a few ultimate things from this setup:
+
+ - Bandstructure calculations (you might want to do this on your machine)
+ - wavefunction generation
+ - structural relaxation
+ - transport on lead/barrier/lead systems (what this setup was designed to do)
+
+
+Consider the sample system as templates, and proceed from there. 
+
+
+
+=========== Instructions for each type of calculation ======================
+
+For a bandstructure calculation, one should really copy the template scripts from the symmetry-resolved calculations for the local machine calculation. If you are using small systems (less than 4-8 atoms) you can run it on your laptop in a few hours. 
+
+If symmetry resolved bands are not desired, one can run an scf/nscf/bands/"bandcreate" (bad name) calculation in succession. This is done by placing the three near-identical scripts in a folder, and then sticking the input.bandcreate input in the same folder. Running option "4" with qe.sh will queue this, and then return it to your output directory
+
+From there, the bandstructure can be plotted with "bandstructure.sh" or perhaps a more up-to-date, robust script
+
+
+
+
+
+(search "PWCOND iramis" for more documentation of the whole tunnel calculation!!!!!!!)
+For the conduction on a tunnel barrier, the calculation comes in a few distinct steps:
+ - find the lattice constant for the semi-infinite leads, or run vc-relax (these unit cells are small)
+ - generate for parallel and antiparallel magnetization of the leads -- 2 systems in total
+ - generate the guessed atomic coordinates (from literature, unitcellgen script, lattice constants, etc)
+ - relax the atomic positions to self-consistency (vc-relax in quantum espresso, or done in VASP)
+ - generate the wave functions from atomic coordinates via SCF run (done as part of the vc-relax calculation in QE)
+ - copy them back from $SCRATCH directory, to somewhere more permanent ($WORK, or corral if you need more space)
+ - insert input.spin_up.cond and input.spin_down.cond (only consider up spin if not magnetic, turn off spin polarization)
+ - copy leads into system 
+	- if antiparallel magnetization desired as well for TMR, must generate scattering region with double length and cut in half as documented in PWCOND IRAMIS mtj example
+ - run conduction calculation
+ - get transmission! (map brillouin zone with bzplot2d.sh or bzplot.sh if desired)
+
+ Breaking those calculations down, you would run 3 leadscfs (one left P, one right P, one right AP), generate the MTJ unit cell and exactly match the leads in X and Y, run a calculation 16, run 17 in scratch until it is converged, and then copy the calculation somewhere safe. Then copy the leads into the same directory, and run "cptransinput.sh", which will copy the desired input files over into your calculation -- make sure and cut the AP barrier region in half! Then run 21 for conduction, and then run 23/24 if 48 hours are not enough time.  
+
+
+
+
+
+
+
+

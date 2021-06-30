@@ -1,0 +1,27 @@
+&inputcond
+    outdir='./scratch/',
+    prefixl='lead_up',
+    prefixr='lead_down',
+    prefixs='scn',
+    max_seconds=169200,
+    tran_prefix='transmission'
+    recover=.FALSE.,
+    tran_file='trans_down.out',
+!    lorb=.TRUE.,
+!    lorb3d=.TRUE.,
+    ikind=2,
+    iofspin = 2,
+    bds=
+    energy0=0.00d0,
+    denergy=0.005d0,
+    tk_plot = 1,
+!    ecut2d=50,
+    ewind=6.d0,
+    epsproj=1.d-8,
+    delgep = 8.d-10,
+    nz1 = 15,
+ &
+    0
+    200 200 0 0
+    1    
+
