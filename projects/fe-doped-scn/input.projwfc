@@ -1,0 +1,7 @@
+&projwfc
+    prefix = 'dat'
+    !outdir = './outdir/'
+    lwrite_overlaps = .true.
+    filpdos='scn.pdos.dat'
+    filproj='scn.proj.dat'
+/
