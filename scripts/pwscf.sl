@@ -5,9 +5,9 @@
 #SBATCH -N 2         # total number of nodes requested
 #SBATCH -p small              # Queue name
 #SBATCH -t 48:00:00       # Run time (hh:mm:ss) - 0.25 hours (max is 48 hours)
-#SBATCH --mail-user=vivian.rogers@utexas.edu    # Email notification address MAKE THIS YOURS, PLEASE
+#SBATCH --mail-user=sc2329@cornell.edu    # Email notification address MAKE THIS YOURS, PLEASE
 #SBATCH --mail-type=ALL                  # Email at Begin/End of job  (UNCOMMENT)
-#SBATCH -A Spintronic-Computing
+#SBATCH -A MRSEC-REU
 
 
 
