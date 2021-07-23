@@ -1,0 +1,94 @@
+ &control
+    calculation='scf'
+    restart_mode='from_scratch', !disregards any prior wfc, etc files created 
+    pseudo_dir = './pseudos', 		 !the pseudopotentials will be in this directory
+    outdir='./scratch/'		 !the relaxed wfcs, etc will be found in the scratch directory under this folder
+    prefix='mgo' 		 !this is the prefix that the PWCOND file will pull from
+    max_seconds=1.656D+5 	 !use this to break into sub-48 hour intervals to fit in queue
+    verbosity='high' 		 !will print out fermi energy in output 
+    !etot_conv_thr= 		 !convergence is achieved when the total energy change between steps is less than this
+    !forc_conv_thr= 		 !convergence is achieved when all forces are smaller than this
+    !tefield = .true. 		 !adds a saw-like potential to simulate an electric field 
+    !dipfield = .true. 		 !adds a dipole correction if tefield is true
+    !lelfield = .true. 		 !"If .TRUE. a homogeneous finite electric field described through the modern theory of the polarization is applied." ?
+    !lorbm = .true. 		 !if nscf calculation, perform orb. magnetization calculation
+/
+ &system
+    ibrav = 6, 				!defines a tetragonal unit cell (must have for transport)
+    celldm(1)=5.416 			!unit cell width in bohr radii in x 
+    !celldm(2)=5.416 			!unit cell width in bohr radii in y
+    celldm(3)=10.9225 		!unit cell in bohr radii in z, transport direction
+    nat= 25, 				!number of atoms in unit cell for scf calculation
+    ntyp= 4, 				!number of types of atoms defined under atomic species
+    nbnd = 400 				!number of bands to be calculated, default should be fine
+    !tot_charge = 0 			!total charge of the system, # of additional or missing electrons
+    nosym = .true. 			!if true, charge density is not symmetrized--use in large unit cells?
+    
+    noncolin= .true. 			!"if .true, the program will perform a noncollinear calculation"
+    lspinorb = .true. 			!if true, noncolin mode can use a pseudopotential with spin-orbit
+    !nspin = 2,				!if 1, will perform non-spin-polarized calculation. if 2, will do so, constraining magnetization to z axis. if 4, will do noncollinear magnetization in generic direction. use noncolin=.true.
+    starting_magnetization(1)= 1,	!starting magnetization
+    starting_magnetization(2)= 1,	!starting magnetization
+    starting_spin_angle = .true.
+    angle1(1) = 90,
+    angle1(2) = 90,
+    angle2(1) = 0,
+    angle2(2) = 0,
+    !lda_plus_u = .true. 		!enable to do DFT+U calculations
+    !lda_plus_u_kind = 1, 		!must be 0 to use with pwcond
+    !hubbard_U(3) = 4.5, 		!hubbard offset for particular atom in index
+    !hubbard_alpha(1) =  		!"perturbation used to compute U with linear response method (see pw.x guide)
+    !hubbard_beta(1) =  		!"perturbation used to compute J0 with linear response method (see pw.x guide)
+    ecutwfc = 64.0, 			!kinetic energy cutoff (Ry) for wfcs
+    ecutrho = 782.0, 			!kinetic energy cutoff for charge density and potential. see *.UPF file 
+    occupations='smearing', 		!used with systems with metals. Doesn't fix occupations. 
+    smearing='mv', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
+    degauss=0.01 			!value of gaussian spreading for brillouin zone integration
+ /
+ &electrons
+    electron_maxstep=1200
+    diagonalization='david',		!type of diagonalization, conjugate-gradient band by band diag. uses less me 
+    !startwingwfc='random',		!
+    mixing_mode='local-TF',
+    !efield = 0 			!amplitude of efield if lelfield = .true.. see efield_cart(i) for direction
+    conv_thr = 1.0e-8,			!convergence threshold for scf, will stop if estimated energy error is less that
+    mixing_beta = 0.05			!mixing factor for scf
+ /
+    
+ATOMIC_SPECIES   
+ FeL 55.845 Fe.UPF 
+ FeR 55.845 Fe.UPF 
+ Mg 24.305  Mg.UPF
+ O 15.999 O.UPF 
+     
+ATOMIC_POSITIONS (crystal) 
+
+Mg	0	0	0.286135968
+Mg	0.5	0.5	0.358292026
+Mg	0	0	0.429142989
+Mg	0.5	0.5	0.499997898
+Mg	0	0	0.570852807
+Mg	0.5	0.5	0.641703739
+Mg	0	0	0.713859828
+O	0.5	0.5	0.28755712
+O	0	0	0.358146032
+O	0.5	0.5	0.429144836
+O	0	0	0.499997898
+O	0.5	0.5	0.57085096
+O	0	0	0.641849733
+O	0.5	0.5	0.712438676
+FeL	0	0	0
+FeL	0.5	0.5	0.043652168
+FeL	0	0	0.087409591
+FeL	0.5	0.5	0.131024106
+FeL	0	0	0.175120036
+FeL	0.5	0.5	0.216607429
+FeR	0.5	0.5	0.783388337
+FeR	0	0	0.824875744
+FeR	0.5	0.5	0.868971644
+FeR	0	0	0.912586167
+FeR	0.5	0.5	0.956343548
+
+K_POINTS (automatic)
+ 12 12 1 0 0 0 
+
