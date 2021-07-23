@@ -20,34 +20,29 @@
     celldm(3)=11.963 		!unit cell in bohr radii in z, transport direction
     nat= 25, 				!number of atoms in unit cell for scf calculation
     ntyp= 4, 				!number of types of atoms defined under atomic species
-    nbnd = 300 				!number of bands to be calculated, default should be fine
+    nbnd = 400 				!number of bands to be calculated, default should be fine
     !tot_charge = 0 			!total charge of the system, # of additional or missing electrons
     nosym = .true. 			!if true, charge density is not symmetrized--use in large unit cells?
     
-    lda_plus_u_kind = 1, 
     noncolin= .true. 			!"if .true, the program will perform a noncollinear calculation"
     lspinorb = .true. 			!if true, noncolin mode can use a pseudopotential with spin-orbit
     !nspin = 2,				!if 1, will perform non-spin-polarized calculation. if 2, will do so, constraining magnetization to z axis. if 4, will do noncollinear magnetization in generic direction. use noncolin=.true.
     starting_magnetization(1)= 1,	!starting magnetization
     starting_magnetization(2)= 1,	!starting magnetization
-    starting_spin_angle = .true.
-    angle1(1) = 90,
-    angle1(2) = 90,
-    angle2(1) = 0,
-    angle2(2) = 0,
     lda_plus_u = .true. 		!enable to do DFT+U calculations
+    lda_plus_u_kind = 1, 		!must be 0 to use with pwcond
     hubbard_U(3) = 4.5, 		!hubbard offset for particular atom in index
     !hubbard_alpha(1) =  		!"perturbation used to compute U with linear response method (see pw.x guide)
     !hubbard_beta(1) =  		!"perturbation used to compute J0 with linear response method (see pw.x guide)
     ecutwfc = 64.0, 			!kinetic energy cutoff (Ry) for wfcs
     ecutrho = 782.0, 			!kinetic energy cutoff for charge density and potential. see *.UPF file 
     occupations='smearing', 		!used with systems with metals. Doesn't fix occupations. 
-    smearing='gaussian', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
+    smearing='mv', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
     degauss=0.01 			!value of gaussian spreading for brillouin zone integration
  /
  &electrons
     electron_maxstep=1200
-    diagonalization='cg',		!type of diagonalization, conjugate-gradient band by band diag. uses less me 
+    diagonalization='david',		!type of diagonalization, conjugate-gradient band by band diag. uses less me 
     !startwingwfc='random',		!
     mixing_mode='local-TF',
     !efield = 0 			!amplitude of efield if lelfield = .true.. see efield_cart(i) for direction
@@ -91,5 +86,5 @@ FeR	0.5	0.5	0.959228399
 
 
 K_POINTS (automatic)
- 11 11 1 1 1 1 
+ 12 12 1 0 0 0 
 
