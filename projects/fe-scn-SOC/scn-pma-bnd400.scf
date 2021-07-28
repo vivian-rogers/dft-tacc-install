@@ -38,7 +38,7 @@
     ecutrho = 782.0, 			!kinetic energy cutoff for charge density and potential. see *.UPF file 
     occupations='smearing', 		!used with systems with metals. Doesn't fix occupations. 
     smearing='mv', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
-    degauss=0.01 			!value of gaussian spreading for brillouin zone integration
+    degauss=0.02 			!value of gaussian spreading for brillouin zone integration
  /
  &electrons
     electron_maxstep=1200
@@ -47,7 +47,7 @@
     mixing_mode='local-TF',
     !efield = 0 			!amplitude of efield if lelfield = .true.. see efield_cart(i) for direction
     conv_thr = 1.0e-8,			!convergence threshold for scf, will stop if estimated energy error is less that
-    mixing_beta = 0.05			!mixing factor for scf
+    mixing_beta = 0.03			!mixing factor for scf
  /
     
 ATOMIC_SPECIES   
@@ -86,5 +86,5 @@ FeR	0.5	0.5	0.959228399
 
 
 K_POINTS (automatic)
- 12 12 1 0 0 0 
+ 16 16 1 0 0 0 
 
