@@ -1,0 +1,54 @@
+ &control
+    calculation='scf'
+    restart_mode='from_scratch', !disregards any prior wfc, etc files created 
+    pseudo_dir = './pseudos-hybrid/', 		 !the pseudopotentials will be in this directory
+    outdir = './scratch/'
+    prefix='dat' 		 !this is the prefix that the PWCOND file will pull from
+    !max_seconds=1.0D+7 	 !use this to break into sub-48 hour intervals to fit in queue
+    verbosity='high' 		 !will print out fermi energy in output 
+/
+&system
+    ibrav= 2,
+    A = 4.5
+    nat= 2, 				!number of atoms in unit cell for scf calculation
+    ntyp= 2, 				!number of types of atoms defined under atomic species
+    !nosym=.true.
+    !nbnd = 32 				!number of bands to be calculated, default should be fine
+    input_dft='HSE',
+    nqx1=1, nqx2=1, nqx3=1,
+    !nqx1=2, nqx2=2, nqx3=2,
+    ecutwfc = 100, 			!kinetic energy cutoff (Ry) for wfcs
+    ecutfock = 400
+    ecutrho = 400, 			!kinetic energy cutoff for charge density and potential. see *.UPF file 
+    !occupations='smearing', 		!used with systems with metals. Doesn't fix occupations. 
+    !smearing='gaussian', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
+    !degauss=0.01 			!value of gaussian spreading for brillouin zone integration
+ /
+ &electrons
+    diagonalization='david',		!type of diagonalization, conjugate-gradient band by band diag. uses less mem. 
+    !startwingwfc='random',		!
+    !efield = 0 			!amplitude of efield if lelfield = .true.. see efield_cart(i) for direction
+    conv_thr = 1.0e-9,			!convergence threshold for scf, will stop if estimated energy error is less that
+    mixing_beta = 0.5			!mixing factor for scf
+ /
+! &ions
+!    ion_dynamics = 'bfgs',
+!    ion_positions = 'default',  
+!    pot_extrapolation = 'atomic',
+!    !wfc_extrapolation = 'first_order',
+! /
+! &cell
+!    cell_dynamics = 'bfgs',
+!    cell_dofree = 'xyz',
+! /
+ 
+ATOMIC_SPECIES
+Sc 44.9559 Sc.UPF
+N  14.0067  N.UPF
+
+ATOMIC_POSITIONS (crystal)
+Sc 0.00000 0.00000 0.0000
+N  0.5000 0.5000 0.5000
+
+K_POINTS {automatic}
+8 8 8 0 0 0
