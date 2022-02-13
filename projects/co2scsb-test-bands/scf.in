@@ -1,0 +1,54 @@
+&control
+ calculation='scf',
+ prefix='dat',
+ pseudo_dir= './pseudos',
+ outdir = './scratch',
+ wf_collect = .true.,
+ max_seconds = 169200 
+ !max_seconds='3600', 
+/
+&system
+ ibrav=2,
+ A=6.22
+ !celldm(1) = 8.0420
+ nat=4,
+ ntyp=4,
+ noncolin= .true. 
+ lspinorb = .true.
+ nosym= .true.
+ noinv = .true.
+ no_t_rev = .true.
+ starting_magnetization(1)= 0.15
+ starting_magnetization(2)= 0.15
+ starting_magnetization(3)= -0.05
+ starting_magnetization(4)= 0,	!starting magnetization
+ report = 1,
+ 
+ ecutwfc = 100,
+ ecutfock = 200,
+ ecutrho = 400,
+ nbnd = 70
+ input_dft='HSE'
+ nqx1=2, nqx2=2, nqx3=2 !this is NOT converged but fast
+ occupations='smearing', 		!used with systems with metals. Doesn't fix occupations. 
+ smearing='gaussian', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
+ degauss=0.01 			!value of gaussian spreading for brillouin zone integration
+  
+/
+&electrons
+ conv_thr=1.d-6,
+ adaptive_thr = .true.
+ mixing_beta = 0.5
+/
+ATOMIC_SPECIES
+ Co1 58.933 Co.UPF
+ Co2 58.933 Co.UPF
+ Sc 44.956 Sc.UPF
+ Sb 121.76 Sb.UPF
+ATOMIC_POSITIONS crystal
+ Sc 0.00000 0.00000 0.0000
+ Co1 0.25000 0.25000 0.2500
+ Sb 0.50000 0.50000 0.5000
+ Co2 0.75000 0.75000 0.7500
+K_POINTS {automatic}
+ 8 8 8 0 0 0

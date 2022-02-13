@@ -1,0 +1,4 @@
+&inputpp
+   outdir = './og_scratch'
+   prefix = 'dat'
+/
