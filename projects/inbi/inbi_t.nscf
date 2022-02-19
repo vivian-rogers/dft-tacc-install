@@ -1,0 +1,62 @@
+&control
+ calculation='nscf'
+ restart_mode='restart',
+ prefix='dat'
+ verbosity='high'
+ pseudo_dir='./pseudos/'
+/
+&system
+    !fcp_mu=.true.
+    ibrav= 6,
+    A=4.986,
+    C=4.985
+    nat= 4, 				!number of atoms in unit cell for scf calculation
+    ntyp= 2, 				!number of types of atoms defined under atomic species
+    nbnd = 80, 				!number of bands to be calculated, default should be fine
+    !tot_charge = 0 			!total charge of the system, # of additional or missing electrons
+    !nosym = .false. 			!if true, charge density is not symmetrized--use in large unit cells?
+    
+    noncolin= .true. 			!"if .true, the program will perform a noncollinear calculation"
+    lspinorb = .true. 			!if true, noncolin mode can use a pseudopotential with spin-orbit
+    !nspin = 1,				!if 1, will perform non-spin-polarized calculation. if 2, will do so, constraining magnetization to z axis. if 4, will do noncollinear magnetization in generic direction. use noncolin=.true.
+    !starting_magnetization(1)= 1,	!starting magnetization
+    !angle1(1) = 90 			!angle in degrees between initial magnetization and z axis for noncollinear
+    !angle2(1) = 90			!angle in degrees between proj. of init. magnetization on xy plane and x axis
+    !constrained_magnetization = atomic	!atomic magnetizations are constrained to defined starting magnetization, see px.x guide for more, can constrain direction and etc
+    !fixed_magnetization(1) = 1.0	!total magnetization vector to fix in x
+    !fixed_magnetization(2) = 0.0	!total magnetization vector to fix in y
+    !fixed_magnetization(3) = 0.0	!total magnetization vector to fix in z
+    
+    !eamp = 1 				!amplitude of electric field in Hartree a.u. if tefield=.true. 
+    !lda_plus_u = .true. 		!enable to do DFT+U calculations
+    !lda_plus_u_kind = 0, 		!must be 0 to use with pwcond
+    hubbard_U(1) = 4.5, 		!hubbard offset for particular atom in index
+    !hubbard_alpha(1) =  		!"perturbation used to compute U with linear response method (see pw.x guide)
+    !hubbard_beta(1) =  		!"perturbation used to compute J0 with linear response method (see pw.x guide)
+    ecutwfc = 50.0, 			!kinetic energy cutoff (Ry) for wfcs
+    ecutrho = 500.0, 			!kinetic energy cutoff for charge density and potential. see *.UPF file 
+    occupations='smearing', 		!used with systems with metals. Doesn't fix occupations. 
+    smearing='mv', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
+    degauss=0.02 			!value of gaussian spreading for brillouin zone integration
+ /
+ &electrons
+    diagonalization='david',		!type of diagonalization, conjugate-gradient band by band diag. uses less mem. 
+    !startwingwfc='random',		!
+    !efield = 0 			!amplitude of efield if lelfield = .true.. see efield_cart(i) for direction
+    conv_thr = 1.0e-9,			!convergence threshold for scf, will stop if estimated energy error is less that
+    mixing_beta = 0.3			!mixing factor for scf
+ /
+
+ 
+ATOMIC_SPECIES
+In 44.9559 In.UPF
+Bi  14.0067  Bi.UPF
+
+ATOMIC_POSITIONS (crystal)
+In 0.00000 0.00000 0.5000
+In 0.50000 0.50000 0.5000
+Bi 0.00000 0.50000 0.89752
+Bi 0.50000 0.00000 0.10248
+
+K_POINTS (automatic)
+16 16 16 0 0 0

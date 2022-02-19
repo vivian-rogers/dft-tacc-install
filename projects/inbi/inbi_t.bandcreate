@@ -1,0 +1,4 @@
+&bands
+	prefix = 'dat'
+	filband = 'bands.dat'	
+/
