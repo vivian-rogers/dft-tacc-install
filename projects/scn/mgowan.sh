@@ -3,17 +3,17 @@
 
 echo "calculate the band-structure of MgO on HSE level using wannierization"
 
-#NP=1 #number of processors
+NP=3 #number of processors
 rm -f kpoints.dat
 
-k="6"
+k="8"
 q="3"
 
 cat >scf.in <<EOF
 &control
  calculation='scf',
  prefix='mgo',
- pseudo_dir= './',
+ pseudo_dir= './pseudos-hybrid',
  outdir = './',
 /
 &system
@@ -26,7 +26,7 @@ cat >scf.in <<EOF
  ecutrho = 400,
  nbnd = 16
  input_dft='HSE'
- nqx1=$q, nqx2=$q, nqx3=$q !this is NOT converged but fast
+ nqx1=$3, nqx2=$3, nqx3=$3 !this is NOT converged but fast
  occupations='smearing', 		!used with systems with metals. Doesn't fix occupations. 
  smearing='gaussian', 			!type of smearing... see http://theossrv1.epfl.ch/Main/ElectronicTemperature
  degauss=0.01 			!value of gaussian spreading for brillouin zone integration
@@ -44,8 +44,8 @@ ATOMIC_POSITIONS crystal
 K_POINTS {automatic}
  $k $k $k 0 0 0
 EOF
-module load qe/6.6
-ibrun pw.x -input scf.in
+#module load qe/6.6
+mpirun $QEpath/pw.x -np $NP -i scf.in > scf.out
 
 cat >opengrid.in <<EOF
 &inputpp 
@@ -54,7 +54,8 @@ cat >opengrid.in <<EOF
 /
 EOF
 
-ibrun $qePathEdited/open_grid.x -input opengrid.in >opengrid.out
+$QEpath/open_grid.x -input opengrid.in > opengrid.out
+#mpirun $QEpath/open_grid.x -input opengrid.in >opengrid.out
 
 
 
@@ -127,7 +128,7 @@ cat >pw2wannier90.in <<EOF
 /
 EOF
 
-$qePathEdited/wannier90.x -pp mgo
-ibrun $qePathEdited/pw2wannier90.x <pw2wannier90.in
-$qePathEdited/wannier90.x mgo
-bash plot.sh mgo_band.dat
+$QEpath/wannier90.x -pp mgo
+mpirun $QEpath/pw2wannier90.x < pw2wannier90.in > pw2wan.out
+$QEpath/wannier90.x mgo > w90.out
+bash bandstructure.sh mgo_band.dat

@@ -22,18 +22,23 @@
 
 
 ### running desired calculations, postprocessing
-module load qe/6.6
+#module load qe/6.6
 # MKL_NUM_THREADS=8
-ibrun pw.x -input input.scf
-ibrun open_grid.x -input input.og > og.out
+
+mpirun $QEpath/pw.x -np 4 -i input.scf > scf.out
+#ibrun pw.x -input input.scf
+rm -f kpoints.dat
+$QEpath/open_grid.x -i input.og >og.out
+#ibrun open_grid.x -input input.og > og.out
 
 #give us the kpoints in a wannier90 readable format
 awk '/wannier90/{flag=1;next}/OPEN_GRID    :/{flag=0}flag' og.out >kpoints.dat
 
 bash wingen.sh
 
-$qePathEdited/wannier90.x -pp input
-$qePathEdited/pw2wannier90.x -input input.pw2wan
+$QEpath/wannier90.x -pp input
+$QEpath/pw2wannier90.x -input input.pw2wan
+mpirun $QEpath/wannier90.x -np 4 input
 # ibrun $qePathEdited/wannier90.x input
 
 ### copy files back to output folder

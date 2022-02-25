@@ -9,7 +9,9 @@ rm -f kpoints.dat
 k="5"
 q="2"
 lat="6.22"
-hlat=$(awk '{print ($1*0.5)}' <<<"${lat}")
+hlat=$(awk '{print ($1*0.5)}' <<< "${lat}")
+
+<
 
 a1="Co"
 a2="Co"

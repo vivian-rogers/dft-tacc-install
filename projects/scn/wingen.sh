@@ -41,7 +41,7 @@ W  0.500000 0.25000 0.75000  K  0.375000 0.37500 0.75000
 K  0.375000 0.37500 0.75000  G  0.000000 0.00000 0.00000
 end kpoint_path
 
-mp_grid : 8 8 8
+mp_grid : 6 6 6
 
 begin kpoints
 $(cat kpoints.dat)

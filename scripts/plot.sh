@@ -1,6 +1,6 @@
 
 
-module load python2
+#module load python2
 
 
 fermi=0
@@ -16,12 +16,12 @@ file=$1
 #for file in *_e1; do
 
 printf "plotting $file\n"
-python << END
+python3 << END
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib as mpl
 import csv
-import pandas as pd
+#import pandas as pd
 fig = mpl.pyplot.figure(figsize=(7,5))
 
 #fig = mpl.pyplot.figure(figsize=(12,9.5))
@@ -42,16 +42,16 @@ y5 = []
 with open('$file') as fp:
 	line = fp.readline()
 	line = fp.readline()
-        while line:
+	while line:
 		line = fp.readline()
 		columns = line.split()
 		if(len(columns)>1):
-		 x.append(float(columns[0]))
-               	 y1.append(float(columns[1]))
+			x.append(float(columns[0]))
+			y1.append(float(columns[1]))
 		else:
-		 surface = plt.plot(x,y1,c='#111FFA')
-                 x = []
-		 y1 = []	
+			surface = plt.plot(x,y1,c='#111FFA')
+			x = []
+			y1 = []	
 		# y2.append(float(columns[2]))
                	# y3.append(float(columns[3]))
                	# y4.append(float(columns[4]))

@@ -1,7 +1,7 @@
- &control
+&control
     calculation='scf'
     restart_mode='from_scratch',
-    pseudo_dir = './',
+    pseudo_dir = './pseudos',
     outdir='./'
     prefix='Fe'
  /

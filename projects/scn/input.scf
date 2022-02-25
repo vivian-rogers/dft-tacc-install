@@ -15,7 +15,7 @@
     !nosym=.true.
     !nbnd = 32 				!number of bands to be calculated, default should be fine
     input_dft='HSE',
-    nqx1=1, nqx2=1, nqx3=1,
+    nqx1=3, nqx2=1, nqx3=1,
     !nqx1=2, nqx2=2, nqx3=2,
     ecutwfc = 100, 			!kinetic energy cutoff (Ry) for wfcs
     ecutfock = 400
@@ -39,7 +39,7 @@
 ! /
 ! &cell
 !    cell_dynamics = 'bfgs',
-!    cell_dofree = 'xyz',
+!    cell_dofree = 'ibrav',
 ! /
  
 ATOMIC_SPECIES
@@ -51,4 +51,4 @@ Sc 0.00000 0.00000 0.0000
 N  0.5000 0.5000 0.5000
 
 K_POINTS {automatic}
-8 8 8 0 0 0
+6 6 6 0 0 0

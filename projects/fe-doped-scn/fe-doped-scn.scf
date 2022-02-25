@@ -1,7 +1,7 @@
  &control
     calculation='vc-relax'
     restart_mode='from_scratch', !disregards any prior wfc, etc files created 
-    pseudo_dir = '/work/06640/wrogers/mysharedirectory/pseudos/ONCV/SR/', 		 !the pseudopotentials will be in this directory
+    pseudo_dir = './pseudos', 		 !the pseudopotentials will be in this directory
     prefix='dat' 		 !this is the prefix that the PWCOND file will pull from
     disk_io = 'low'
     verbosity='high' 		 !will print out fermi energy in output 
