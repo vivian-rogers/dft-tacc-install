@@ -2,15 +2,15 @@
 
 
 
-NP=4 #number of processors
+NP=8 #number of processors
 rm -f kpoints.dat
 
-k="4"
-q="2"
+k="3"
+q="1"
 simname="inbi_t"
 echo "calculate the band-structure of $simname on HSE level using wannierization"
 lat="4.991"
-hlat=$(awk '{print ($1*0.5)}' <<< "${lat}")
+#hlat=$(awk '{print ($1*0.5)}' <<< "${lat}")
 
 
 
@@ -18,7 +18,7 @@ a1="In"
 a2="Bi"
 
 
-nbands="64"
+nbands="68"
 
 cat >scf.in <<EOF
 &control
@@ -32,15 +32,15 @@ cat >scf.in <<EOF
 &system
  ibrav=6,
  A=$lat
- C=4.776
+ C=$lat
  !celldm(1) = 8.0420
  nat=4,
  ntyp=2,
  !noncolin= .true. 
  !lspinorb = .true.
- !nosym= .true.
- !noinv = .true.
- !no_t_rev = .true.
+ nosym= .true.
+ noinv = .true.
+ no_t_rev = .true.
  !!starting_magnetization(1)= 0.15
  !starting_magnetization(2)= 0.15
  !starting_magnetization(3)= -0.05
@@ -64,8 +64,8 @@ cat >scf.in <<EOF
  mixing_beta = 0.3
 /
 ATOMIC_SPECIES
- ${a1} 58.933 ${a1}SR.upf
- ${a2} 58.933 ${a2}SR.upf
+ ${a1} 58.933 ${a1}.upf
+ ${a2} 58.933 ${a2}.upf
 
 ATOMIC_POSITIONS crystal
  ${a1} 0.000 0.000 0.500
@@ -81,7 +81,8 @@ echo "Printed SCF file"
 
 echo "Running SCF..."
 
-mpirun $QEpath/pw.x -np $NP -input scf.in > scf.out
+mpirun pw.x -np $NP -input scf.in > scf.out
+#mpirun $QEpath/pw.x -np $NP -input scf.in > scf.out
 
 cat >opengrid.in <<EOF
 &inputpp 
@@ -91,7 +92,10 @@ cat >opengrid.in <<EOF
 EOF
 
 echo "Running opengrid..."
-mpirun $QEpath/open_grid.x -np 1 -i opengrid.in > opengrid.out
+
+#open_grid.x -i opengrid.in > opengrid.out
+mpirun open_grid.x -np $NP -i opengrid.in > opengrid.out
+#mpirun $QEpath/open_grid.x -np 1 -i opengrid.in > opengrid.out
 
 
 
@@ -101,7 +105,7 @@ mpirun $QEpath/open_grid.x -np 1 -i opengrid.in > opengrid.out
 awk '/wannier90/{flag=1;next}/OPEN_GRID    :/{flag=0}flag' opengrid.out > kpoints.dat
 
 cat > $simname.win <<EOF
-num_wann        = 6 
+num_wann        = $nbands 
 num_bands       = $nbands
 dis_num_iter    = 400
 num_iter        = 100
@@ -112,10 +116,10 @@ guiding_centres =.true.
 !dis_froz_min      = -8.0d0
 
 
-dis_win_min = 8.1
+dis_win_min = 2.1
 dis_win_max = 20.15
 dis_froz_min = -20
-dis_froz_max = 50.15
+dis_froz_max = 50
 begin atoms_frac
  ${a1} 0.000 0.000 0.500
  ${a1} 0.500 0.500 0.500
@@ -166,15 +170,20 @@ cat >pw2wannier90.in <<EOF
    outdir = './$simname'
    prefix = '$simname'
    seedname = '$simname'
-   write_spn = .true.   
+   spin_component = 'none'
+   !write_spn = .true.   
    write_mmn = .true.
    write_amn = .true.
-   write_unk = .true.
+   write_unk = .false.
 /
 EOF
 
 echo "Running wannier90"
-$QEpath/wannier90.x -pp $simname
-mpirun $QEpath/pw2wannier90.x -np 2 -i pw2wannier90.in
-$QEpath/wannier90.x $simname
+
+wannier90.x -pp $simname
+#$QEpath/wannier90.x -pp $simname
+mpirun pw2wannier90.x -np 4 -i pw2wannier90.in
+#mpirun $QEpath/pw2wannier90.x -np 2 -i pw2wannier90.in
+wannier90.x $simname
+#$QEpath/wannier90.x $simname
 bash bandstructure.sh ${simname}_band.dat
