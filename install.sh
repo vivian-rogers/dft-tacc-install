@@ -33,7 +33,7 @@ read booltest
 #if (($booltest == 1 )); then
 #	cd ./install
 #	printf "\nThis may take a long time...\n\n"
-#	echo "Go get a snack, kick back, scroll through reddit"
+#	echo "Go get a snack and relax!"
 #	echo "What snack will you be consuming? (type your snack): "
 #	read snack
 #	wget https://www.utinclab.com/wp-content/uploads/2021/06/q-e-bigkgrid-sc-hubU-6.4.1.tar.gz
